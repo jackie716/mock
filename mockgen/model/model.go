@@ -21,6 +21,8 @@ import (
 	"io"
 	"reflect"
 	"strings"
+
+	"github.com/go-yaml/yaml"
 )
 
 // pkgPath is the importable path for package model
@@ -31,6 +33,11 @@ type Package struct {
 	Name       string
 	Interfaces []*Interface
 	DotImports []string
+}
+
+func (pkg *Package) ToString() string {
+	b, _ := yaml.Marshal(pkg)
+	return string(b)
 }
 
 func (pkg *Package) Print(w io.Writer) {

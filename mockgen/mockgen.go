@@ -56,11 +56,12 @@ var (
 )
 
 func main() {
+	fmt.Println("---- mock ----")
 	flag.Usage = usage
 	flag.Parse()
-
 	var pkg *model.Package
 	var err error
+	fmt.Printf("source=%s\n", *source)
 	if *source != "" {
 		pkg, err = parseFile(*source)
 	} else {
@@ -73,7 +74,6 @@ func main() {
 	if err != nil {
 		log.Fatalf("Loading input failed: %v", err)
 	}
-
 	if *debugParser {
 		pkg.Print(os.Stdout)
 		return
@@ -137,6 +137,8 @@ func main() {
 
 		g.copyrightHeader = string(header)
 	}
+
+	fmt.Printf("generate = %v %v \n", g, yamlize(*g))
 	if err := g.Generate(pkg, packageName, outputPackagePath); err != nil {
 		log.Fatalf("Failed generating mock: %v", err)
 	}
@@ -235,6 +237,8 @@ func sanitize(s string) string {
 }
 
 func (g *generator) Generate(pkg *model.Package, pkgName string, outputPackagePath string) error {
+	fmt.Printf("generate pkg %v pkgName %v outputPackagePath %v \n", pkg, pkgName, outputPackagePath)
+	fmt.Printf("pkg toString -----------: \n%v\n", pkg.ToString())
 	if pkgName != pkg.Name {
 		outputPackagePath = ""
 	}
@@ -257,6 +261,8 @@ func (g *generator) Generate(pkg *model.Package, pkgName string, outputPackagePa
 
 	// Get all required imports, and generate unique names for them all.
 	im := pkg.Imports()
+
+	fmt.Printf("im -----------------\n%v\n", yamlize(im))
 	im[gomockImportPath] = true
 
 	// Only import reflect if it's used. We only use reflect in mocked methods
