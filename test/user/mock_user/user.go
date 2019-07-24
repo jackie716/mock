@@ -7,7 +7,6 @@ package mock_user
 import (
 	gomock "github.com/golang/mock/gomock"
 	user "github.com/golang/mock/test/user"
-	net "net"
 	reflect "reflect"
 )
 
@@ -35,11 +34,12 @@ func (m *MockUserService) EXPECT() *MockUserServiceMockRecorder {
 }
 
 // GetUserById mocks base method
-func (m *MockUserService) GetUserById(id int) user.User {
+func (m *MockUserService) GetUserById(id int) (user.User, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetUserById", id)
 	ret0, _ := ret[0].(user.User)
-	return ret0
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // GetUserById indicates an expected call of GetUserById
@@ -79,16 +79,4 @@ func (mr *MockUserServiceMockRecorder) UpdateUsers(u interface{}, ids ...interfa
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{u}, ids...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateUsers", reflect.TypeOf((*MockUserService)(nil).UpdateUsers), varargs...)
-}
-
-// Find mocks base method
-func (m *MockUserService) Find(a int, b map[string]int, c net.Conn, d []net.Conn, e [3]int) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "Find", a, b, c, d, e)
-}
-
-// Find indicates an expected call of Find
-func (mr *MockUserServiceMockRecorder) Find(a, b, c, d, e interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockUserService)(nil).Find), a, b, c, d, e)
 }

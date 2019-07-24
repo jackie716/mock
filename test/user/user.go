@@ -1,8 +1,6 @@
 //go:generate mockgen -destination mock_user/user.go -source=$GOFILE
 package user
 
-import "net"
-
 type User struct {
 	Id   int
 	Name string
@@ -10,9 +8,7 @@ type User struct {
 }
 
 type UserService interface {
-	GetUserById(id int) User
+	GetUserById(id int) (User, error)
 	UpdateUser(id int, u User) error
 	UpdateUsers(u User, ids ...int) error
-
-	Find(a int, b map[string]int, c net.Conn, d []net.Conn, e [3]int)
 }
